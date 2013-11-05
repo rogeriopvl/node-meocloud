@@ -1,0 +1,29 @@
+{
+  "name": "meocloud",
+  "version": "0.0.0",
+  "main": "lib/meocloud.js",
+  "description": "MeoCloud api wrapper",
+  "homepage": "http://github.com/rogeriopvl/node-meocloud",
+  "bugs": "https://github.com/rogeriopvl/meocloud/issues",
+  "author": {
+    "name": "Rogério Vicente",
+    "email": "rogeriopvl@gmail.com",
+    "url": "http://rogeriopvl.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rogeriopvl/node-meocloud"
+  },
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ],
+  "devDependencies": {
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-watch": "~0.5.0",
+    "mocha": "~1.14.0",
+    "chai": "~1.8.1",
+    "nock": "~0.22.1"
+  }
+}
