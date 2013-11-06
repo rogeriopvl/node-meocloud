@@ -26,6 +26,9 @@
     "chai": "~1.8.1",
     "nock": "~0.22.1"
   },
+  "scripts": {
+    "test": "mocha"
+  },
   "dependencies": {
     "request": "~2.27.0"
   }
