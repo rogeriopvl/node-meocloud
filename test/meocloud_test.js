@@ -5,12 +5,24 @@ var querystring = require('querystring');
 var MEOCloud = require('../lib/meocloud.js');
 var meocloud;
 
+// OAuth params
+var config = {
+    consumer_key: 'foo',
+    consumer_secret: 'bar',
+    token: 'foobar',
+    token_secret: 'xfoobar'
+};
+
 describe('MEOCloud', function() {
 
     describe('OAuth', function() {
 
-        beforeEach(function(done) {
-            meocloud = new MEOCloud({});
+        // beforeEach(function(done) {
+        //     done();
+        // });
+
+        it('should return exception if no config passed', function(done) {
+            expect(MEOCloud).to.throw(Error);
             done();
         });
 
