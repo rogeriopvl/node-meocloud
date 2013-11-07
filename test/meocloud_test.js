@@ -2,15 +2,27 @@ var expect = require('chai').expect;
 var nock = require('nock');
 var querystring = require('querystring');
 
-var meocloud = require('../lib/meocloud.js')({});
+var MEOCloud = require('../lib/meocloud.js');
+var meocloud;
 
 describe('MEOCloud', function() {
 
     describe('OAuth', function() {
-        // TODO
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud({});
+            done();
+        });
+
     });
 
     describe('Metadata', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud({});
+            done();
+        });
+
         it('should exist as a plublic method on MEOCloud', function(done) {
             expect(typeof meocloud.metadata).to.equal('function');
             done();
