@@ -17,12 +17,13 @@ describe('MEOCloud', function() {
 
     describe('OAuth', function() {
 
-        // beforeEach(function(done) {
-        //     done();
-        // });
-
         it('should return exception if no config passed', function(done) {
             expect(MEOCloud).to.throw(Error);
+            done();
+        });
+
+        it('should send OAuth params in request header', function(done) {
+            // TODO
             done();
         });
 
