@@ -110,5 +110,24 @@ describe('MEOCloud', function() {
                 }
             );
         });
+
+        it('should make correct metadataShare request with params', function(done) {
+            nock('https://api.meocloud.pt')
+            .get('/1/MetadataShare/bb26f0f6-d66f-46a7-8905-1fc125a293e7/test?file_limit=1')
+            .reply(200, { is_dir: true, root: 'meocloud' });
+
+            meocloud.metadataShare(
+                'bb26f0f6-d66f-46a7-8905-1fc125a293e7',
+                '/test',
+                { file_limit: 1 },
+                function(err, data) {
+                    expect(err).to.not.be.ok;
+                    expect(data).to.be.an('object');
+                    expect(data).to.have.ownProperty('is_dir');
+                    expect(data).to.have.ownProperty('root');
+                    done();
+                }
+            );
+        });
     });
 });
