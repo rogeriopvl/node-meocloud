@@ -251,4 +251,41 @@ describe('MEOCloud', function() {
             });
         });
     });
+
+    describe('ListSharedFolders', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud({});
+            done();
+        });
+
+        it('should exist as a plublic method on MEOCloud', function(done) {
+            expect(typeof meocloud.listSharedFolders).to.equal('function');
+            done();
+        });
+
+        it('should make correct listSharedFolders request', function(done) {
+            nock('https://api.meocloud.pt')
+            .get('/1/ListSharedFolders')
+            .reply(200, {
+                '509fc400-2f65-11e2-9501-3c0754179fed': {
+                    folder_type: 'shared',
+                    is_owner: true
+                },
+                'e328c1e9-149c-4065-815e-274de86c5f32': {
+                    folder_type: 'shared',
+                    is_owner: true
+                }
+            });
+
+            meocloud.listSharedFolders(function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('object');
+                expect(data).to.have.ownProperty('e328c1e9-149c-4065-815e-274de86c5f32');
+                expect(data).to.have.ownProperty('509fc400-2f65-11e2-9501-3c0754179fed');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+    });
 });
