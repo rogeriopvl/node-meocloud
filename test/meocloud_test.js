@@ -45,11 +45,12 @@ describe('MEOCloud', function() {
             nock('https://api.meocloud.pt').get('/1/Metadata/meocloud/test')
             .reply(200, { is_dir: true, root: 'meocloud' });
 
-            meocloud.metadata('/test', {}, function(err, data) {
+            meocloud.metadata('/test', {}, function(err, data, status) {
                 expect(err).to.not.be.ok;
                 expect(data).to.be.an('object');
                 expect(data).to.have.ownProperty('is_dir');
                 expect(data).to.have.ownProperty('root');
+                expect(status).to.equal(200);
                 done();
             });
         });
@@ -69,11 +70,12 @@ describe('MEOCloud', function() {
             .get('/1/Metadata/meocloud/test?' + qs)
             .reply(200, { is_dir: true, root: 'meocloud' });
 
-            meocloud.metadata('/test', query, function(err, data) {
+            meocloud.metadata('/test', query, function(err, data, status) {
                 expect(err).to.not.be.ok;
                 expect(data).to.be.an('object');
                 expect(data).to.have.ownProperty('is_dir');
                 expect(data).to.have.ownProperty('root');
+                expect(status).to.equal(200);
                 done();
             });
         });
@@ -101,11 +103,12 @@ describe('MEOCloud', function() {
                 'bb26f0f6-d66f-46a7-8905-1fc125a293e7',
                 '/test',
                 null,
-                function(err, data) {
+                function(err, data, status) {
                     expect(err).to.not.be.ok;
                     expect(data).to.be.an('object');
                     expect(data).to.have.ownProperty('is_dir');
                     expect(data).to.have.ownProperty('root');
+                    expect(status).to.equal(200);
                     done();
                 }
             );
@@ -120,11 +123,12 @@ describe('MEOCloud', function() {
                 'bb26f0f6-d66f-46a7-8905-1fc125a293e7',
                 '/test',
                 { file_limit: 1 },
-                function(err, data) {
+                function(err, data, status) {
                     expect(err).to.not.be.ok;
                     expect(data).to.be.an('object');
                     expect(data).to.have.ownProperty('is_dir');
                     expect(data).to.have.ownProperty('root');
+                    expect(status).to.equal(200);
                     done();
                 }
             );
@@ -148,11 +152,39 @@ describe('MEOCloud', function() {
             .get('/1/ListLinks')
             .reply(200, [ { url: 'http://foobar.com', shareid: 'abcdefghijkl' } ]);
 
-            meocloud.listLinks(function(err, data) {
+            meocloud.listLinks(function(err, data, status) {
                 expect(err).to.not.be.ok;
                 expect(data).to.be.an('array');
                 expect(data[0]).to.have.ownProperty('url');
                 expect(data[0]).to.have.ownProperty('shareid');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+    });
+
+    describe('DeleteLink', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud({});
+            done();
+        });
+
+        it('should exist as a plublic method on MEOCloud', function(done) {
+            expect(typeof meocloud.deleteLink).to.equal('function');
+            done();
+        });
+
+        it('should make correct deleteLink request', function(done) {
+            nock('https://api.meocloud.pt')
+            .post('/1/DeleteLink', { shareid: 'abcdefghijkl' })
+            .reply(200, {});
+
+            meocloud.deleteLink('abcdefghijkl', function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('object');
+                expect(data).to.be.empty;
+                expect(status).to.equal(200);
                 done();
             });
         });
