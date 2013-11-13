@@ -1,3 +1,5 @@
+'use strict';
+
 var expect = require('chai').expect;
 var nock = require('nock');
 var querystring = require('querystring');
@@ -217,6 +219,33 @@ describe('MEOCloud', function() {
                 expect(data).to.have.ownProperty('url');
                 expect(data).to.have.ownProperty('expires');
                 expect(data).to.have.ownProperty('link_shareid');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+    });
+
+    describe('ShareFolder', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud({});
+            done();
+        });
+
+        it('should exist as a plublic method on MEOCloud', function(done) {
+            expect(typeof meocloud.shareFolder).to.equal('function');
+            done();
+        });
+
+        it('should make correct shareFolder request', function(done) {
+            nock('https://api.meocloud.pt')
+            .post('/1/ShareFolder/meocloud/testFolder')
+            .reply(200, { req_id: '509fc400-2f65-11e2-9501-3c0754179fed' });
+
+            meocloud.shareFolder('/testFolder', 'me@me.com', function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('object');
+                expect(data).to.have.ownProperty('req_id');
                 expect(status).to.equal(200);
                 done();
             });
