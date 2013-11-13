@@ -130,4 +130,31 @@ describe('MEOCloud', function() {
             );
         });
     });
+
+    describe('ListLinks', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud({});
+            done();
+        });
+
+        it('should exist as a plublic method on MEOCloud', function(done) {
+            expect(typeof meocloud.listLinks).to.equal('function');
+            done();
+        });
+
+        it('should make correct ListLinks request', function(done) {
+            nock('https://api.meocloud.pt')
+            .get('/1/ListLinks')
+            .reply(200, [ { url: 'http://foobar.com', shareid: 'abcdefghijkl' } ]);
+
+            meocloud.listLinks(function(err, data) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('array');
+                expect(data[0]).to.have.ownProperty('url');
+                expect(data[0]).to.have.ownProperty('shareid');
+                done();
+            });
+        });
+    });
 });
