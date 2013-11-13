@@ -189,4 +189,37 @@ describe('MEOCloud', function() {
             });
         });
     });
+
+    describe('Shares', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud({});
+            done();
+        });
+
+        it('should exist as a plublic method on MEOCloud', function(done) {
+            expect(typeof meocloud.shares).to.equal('function');
+            done();
+        });
+
+        it('should make correct shares request', function(done) {
+            nock('https://api.meocloud.pt')
+            .post('/1/Shares/meocloud/test.txt')
+            .reply(200, {
+                url: 'http://foobar',
+                expires: 'Tue, 01 Jan 2030 00:00:00 +0000',
+                link_shareid: 'abcdefghijkl'
+            });
+
+            meocloud.shares('/test.txt', function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('object');
+                expect(data).to.have.ownProperty('url');
+                expect(data).to.have.ownProperty('expires');
+                expect(data).to.have.ownProperty('link_shareid');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+    });
 });
