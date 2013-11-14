@@ -242,7 +242,9 @@ describe('MEOCloud', function() {
             .post('/1/ShareFolder/meocloud/testFolder')
             .reply(200, { req_id: '509fc400-2f65-11e2-9501-3c0754179fed' });
 
-            meocloud.shareFolder('/testFolder', 'me@me.com', function(err, data, status) {
+            meocloud.shareFolder('/testFolder', {
+                to_email: 'me@me.com'
+            }, function(err, data, status) {
                 expect(err).to.not.be.ok;
                 expect(data).to.be.an('object');
                 expect(data).to.have.ownProperty('req_id');
