@@ -288,4 +288,33 @@ describe('MEOCloud', function() {
             });
         });
     });
+
+    describe('Thumbnails', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud({});
+            done();
+        });
+
+        it('should exist as a plublic method on MEOCloud', function(done) {
+            expect(typeof meocloud.thumbnails).to.equal('function');
+            done();
+        });
+
+        it('should make correct thumbnails request', function(done) {
+            nock('https://api.meocloud.pt')
+            .get('/1/Thumbnails/meocloud/test.jpg?size=m&format=png')
+            .reply(200, {});
+
+            meocloud.thumbnails('/test.jpg', {
+                size: 'm',
+                format: 'png'
+            }, function(err, stream, status) {
+                expect(err).to.not.be.ok;
+                expect(stream).to.be.an('object');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+    });
 });
