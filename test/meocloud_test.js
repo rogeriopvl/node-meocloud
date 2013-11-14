@@ -336,7 +336,11 @@ describe('MEOCloud', function() {
                 '/1/Search/meocloud/Public',
                 '?query=test&mime_type=image%2F*&file_limit=10&include_deleted=true'
             ].join(''))
-            .reply(200, {});
+            .reply(200, [{
+                mime_type: 'image/gif',
+                rev: 'abcdefghijkl',
+                size: '2 KB'
+            }]);
 
             meocloud.search('/Public', {
                 query: 'test',
@@ -345,7 +349,45 @@ describe('MEOCloud', function() {
                 include_deleted: 'true'
             }, function(err, data, status) {
                 expect(err).to.not.be.ok;
-                expect(data).to.be.an('object');
+                expect(data).to.be.an('array');
+                expect(data[0]).to.have.ownProperty('mime_type');
+                expect(data[0]).to.have.ownProperty('rev');
+                expect(data[0]).to.have.ownProperty('size');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+    });
+
+    describe('Revisions', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud({});
+            done();
+        });
+
+        it('should exist as a plublic method on MEOCloud', function(done) {
+            expect(typeof meocloud.revisions).to.equal('function');
+            done();
+        });
+
+        it('should make correct revisions request', function(done) {
+            nock('https://api.meocloud.pt')
+            .get('/1/Revisions/meocloud/Public/test.js?rev_limit=4')
+            .reply(200, [{
+                mime_type: 'application/javascript',
+                rev: 'abcdefghijkl',
+                size: '2 KB'
+            }]);
+
+            meocloud.revisions('/Public/test.js', {
+                rev_limit: 4
+            }, function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('array');
+                expect(data[0]).to.have.ownProperty('mime_type');
+                expect(data[0]).to.have.ownProperty('rev');
+                expect(data[0]).to.have.ownProperty('size');
                 expect(status).to.equal(200);
                 done();
             });
