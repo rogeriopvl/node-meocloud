@@ -317,4 +317,38 @@ describe('MEOCloud', function() {
             });
         });
     });
+
+    describe('Search', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud({});
+            done();
+        });
+
+        it('should exist as a plublic method on MEOCloud', function(done) {
+            expect(typeof meocloud.search).to.equal('function');
+            done();
+        });
+
+        it('should make correct search request', function(done) {
+            nock('https://api.meocloud.pt')
+            .get([
+                '/1/Search/meocloud/Public',
+                '?query=test&mime_type=image%2F*&file_limit=10&include_deleted=true'
+            ].join(''))
+            .reply(200, {});
+
+            meocloud.search('/Public', {
+                query: 'test',
+                mime_type: 'image/*',
+                file_limit: 10,
+                include_deleted: 'true'
+            }, function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('object');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+    });
 });
