@@ -468,4 +468,41 @@ describe('MEOCloud', function() {
             });
         });
     });
+
+    // TODO files test
+
+    describe('Delta', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud({});
+            done();
+        });
+
+        it('should exist as a plublic method on MEOCloud', function(done) {
+            expect(typeof meocloud.delta).to.equal('function');
+            done();
+        });
+
+        it('should make correct delta request', function(done) {
+            nock('https://api.meocloud.pt')
+            .post('/1/Delta', {
+                cursor: '1353289183.061f533'
+            })
+            .reply(200, {
+                has_more: true,
+                entries: []
+            });
+
+            meocloud.delta({
+                cursor: '1353289183.061f533'
+            }, function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('object');
+                expect(data).to.have.ownProperty('entries');
+                expect(data.entries).to.be.an('array');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+    });
 });
