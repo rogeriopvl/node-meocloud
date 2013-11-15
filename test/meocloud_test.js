@@ -548,4 +548,35 @@ describe('MEOCloud', function() {
             });
         });
     });
+
+    describe('CopyRef', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud({});
+            done();
+        });
+
+        it('should exist as a plublic method on MEOCloud', function(done) {
+            expect(typeof meocloud.copyRef).to.equal('function');
+            done();
+        });
+
+        it('should make correct copyRef request', function(done) {
+            nock('https://api.meocloud.pt')
+            .get('/1/CopyRef/meocloud/Photos/Brinquedos.mp4')
+            .reply(200, {
+                copy_ref: 'z1X6ATl6aWtzOGq0c3g5Ng',
+                expires: 'Fri, 31 Jan 2042 21:01:05 +0000'
+            });
+
+            meocloud.copyRef('/Photos/Brinquedos.mp4', null, function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('object');
+                expect(data).to.have.ownProperty('copy_ref');
+                expect(data).to.have.ownProperty('expires');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+    });
 });
