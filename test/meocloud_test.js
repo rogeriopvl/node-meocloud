@@ -579,4 +579,44 @@ describe('MEOCloud', function() {
             });
         });
     });
+
+    describe('Delete', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud({});
+            done();
+        });
+
+        it('should exist as a plublic method on MEOCloud', function(done) {
+            expect(typeof meocloud.delete).to.equal('function');
+            done();
+        });
+
+        it('should make correct delete request', function(done) {
+            nock('https://api.meocloud.pt')
+            .post('/1/Fileops/Delete', {
+                root: 'meocloud',
+                path: '/Temp/test.js',
+            })
+            .reply(200, {
+                is_deleted: true,
+                size: '2 KB',
+                path: '/Temp/test.js'
+            });
+
+            meocloud.delete({
+                root: 'meocloud',
+                path: '/Temp/test.js'
+            }, function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('object');
+                expect(data).to.have.ownProperty('is_deleted');
+                expect(data.is_deleted).to.equal(true);
+                expect(data).to.have.ownProperty('path');
+                expect(data).to.have.ownProperty('size');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+    });
 });
