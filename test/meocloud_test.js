@@ -395,4 +395,40 @@ describe('MEOCloud', function() {
             });
         });
     });
+
+    describe('Restore', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud({});
+            done();
+        });
+
+        it('should exist as a plublic method on MEOCloud', function(done) {
+            expect(typeof meocloud.restore).to.equal('function');
+            done();
+        });
+
+        it('should make correct restore request', function(done) {
+            nock('https://api.meocloud.pt')
+            .post('/1/Restore/meocloud/Public/test.js', { rev: 'abcdefghijkl'})
+            .reply(200, {
+                path: '/Public/test.js',
+                rev: 'abcdefghijkl',
+                size: '2 KB'
+            });
+
+            meocloud.restore('/Public/test.js', {
+                rev: 'abcdefghijkl'
+            }, function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('object');
+                expect(data).to.have.ownProperty('path');
+                expect(data.path).to.equal('/Public/test.js');
+                expect(data).to.have.ownProperty('rev');
+                expect(data).to.have.ownProperty('size');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+    });
 });
