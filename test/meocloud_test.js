@@ -431,4 +431,41 @@ describe('MEOCloud', function() {
             });
         });
     });
+
+    describe('Media', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud({});
+            done();
+        });
+
+        it('should exist as a plublic method on MEOCloud', function(done) {
+            expect(typeof meocloud.media).to.equal('function');
+            done();
+        });
+
+        it('should make correct media request', function(done) {
+            nock('https://api.meocloud.pt')
+            .post('/1/Media/meocloud/Movies/SAPO1.mp4', {
+                download_fallback: 'true',
+                protocol: 'hls'
+            })
+            .reply(200, {
+                url: 'http://stream.meocloud.pt/mediacache/mp4:http://cld.pt/foobar',
+                expires: 'Mon, 19 Nov 2012 05:37:12 +0000'
+            });
+
+            meocloud.media('/Movies/SAPO1.mp4', {
+                download_fallback: true,
+                protocol: 'hls'
+            }, function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('object');
+                expect(data).to.have.ownProperty('url');
+                expect(data).to.have.ownProperty('expires');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+    });
 });
