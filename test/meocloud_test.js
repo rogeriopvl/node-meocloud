@@ -660,4 +660,44 @@ describe('MEOCloud', function() {
             });
         });
     });
+
+    describe('CreateFolder', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud({});
+            done();
+        });
+
+        it('should exist as a plublic method on MEOCloud', function(done) {
+            expect(typeof meocloud.createFolder).to.equal('function');
+            done();
+        });
+
+        it('should make correct createFolder request', function(done) {
+            nock('https://api.meocloud.pt')
+            .post('/1/Fileops/CreateFolder', {
+                root: 'meocloud',
+                path: '/NewStuff'
+            })
+            .reply(200, {
+                is_dir: true,
+                size: '0 bytes',
+                path: '/NewStuff'
+            });
+
+            meocloud.createFolder({
+                root: 'meocloud',
+                path: '/NewStuff',
+            }, function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('object');
+                expect(data).to.have.ownProperty('is_dir');
+                expect(data.is_dir).to.be.ok;
+                expect(data).to.have.ownProperty('path');
+                expect(data).to.have.ownProperty('size');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+    });
 });
