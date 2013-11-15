@@ -505,4 +505,47 @@ describe('MEOCloud', function() {
             });
         });
     });
+
+    describe('Copy', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud({});
+            done();
+        });
+
+        it('should exist as a plublic method on MEOCloud', function(done) {
+            expect(typeof meocloud.copy).to.equal('function');
+            done();
+        });
+
+        it('should make correct copy request', function(done) {
+            nock('https://api.meocloud.pt')
+            .post('/1/Copy', {
+                root: 'meocloud',
+                from_path: '/Public/test.js',
+                to_path: '/Temp/test.js',
+                from_copy_ref: 'z1X6ATl6aWtzOGq0c3g5Ng'
+            })
+            .reply(200, {
+                is_dir: false,
+                size: '2 KB',
+                path: '/Temp/test.js'
+            });
+
+            meocloud.copy({
+                root: 'meocloud',
+                from_path: '/Public/test.js',
+                to_path: '/Temp/test.js',
+                from_copy_ref: 'z1X6ATl6aWtzOGq0c3g5Ng'
+            }, function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('object');
+                expect(data).to.have.ownProperty('is_dir');
+                expect(data).to.have.ownProperty('path');
+                expect(data).to.have.ownProperty('size');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+    });
 });
