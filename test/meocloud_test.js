@@ -520,7 +520,7 @@ describe('MEOCloud', function() {
 
         it('should make correct copy request', function(done) {
             nock('https://api.meocloud.pt')
-            .post('/1/Copy', {
+            .post('/1/Fileops/Copy', {
                 root: 'meocloud',
                 from_path: '/Public/test.js',
                 to_path: '/Temp/test.js',
