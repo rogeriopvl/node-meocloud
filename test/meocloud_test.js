@@ -740,4 +740,40 @@ describe('MEOCloud', function() {
             });
         });
     });
+
+    describe('AccountInfo', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud({});
+            done();
+        });
+
+        it('should exist as a plublic method on MEOCloud', function(done) {
+            expect(typeof meocloud.accountInfo).to.equal('function');
+            done();
+        });
+
+        it('should make correct accountInfo request', function(done) {
+            nock('https://api.meocloud.pt')
+            .get('/1/Account/Info')
+            .reply(200, {
+                display_name: 'Zé das Couves',
+                quota_info: {},
+                active: true,
+                email: 'dude@sapo.pt'
+            });
+
+            meocloud.accountInfo(function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('object');
+                expect(data).to.have.ownProperty('display_name');
+                expect(data).to.have.ownProperty('quota_info');
+                expect(data.quota_info).to.be.an('object');
+                expect(data).to.have.ownProperty('active');
+                expect(data).to.have.ownProperty('email');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+    });
 });
