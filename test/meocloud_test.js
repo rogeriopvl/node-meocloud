@@ -38,7 +38,7 @@ describe('MEOCloud', function() {
             done();
         });
 
-        it('should exist as a plublic method on MEOCloud', function(done) {
+        it('should exist as a public method on MEOCloud', function(done) {
             expect(typeof meocloud.metadata).to.equal('function');
             done();
         });
@@ -90,7 +90,7 @@ describe('MEOCloud', function() {
             done();
         });
 
-        it('should exist as a plublic method on MEOCloud', function(done) {
+        it('should exist as a public method on MEOCloud', function(done) {
             expect(typeof meocloud.metadataShare).to.equal('function');
             done();
         });
@@ -144,7 +144,7 @@ describe('MEOCloud', function() {
             done();
         });
 
-        it('should exist as a plublic method on MEOCloud', function(done) {
+        it('should exist as a public method on MEOCloud', function(done) {
             expect(typeof meocloud.listLinks).to.equal('function');
             done();
         });
@@ -172,7 +172,7 @@ describe('MEOCloud', function() {
             done();
         });
 
-        it('should exist as a plublic method on MEOCloud', function(done) {
+        it('should exist as a public method on MEOCloud', function(done) {
             expect(typeof meocloud.deleteLink).to.equal('function');
             done();
         });
@@ -199,7 +199,7 @@ describe('MEOCloud', function() {
             done();
         });
 
-        it('should exist as a plublic method on MEOCloud', function(done) {
+        it('should exist as a public method on MEOCloud', function(done) {
             expect(typeof meocloud.shares).to.equal('function');
             done();
         });
@@ -232,7 +232,7 @@ describe('MEOCloud', function() {
             done();
         });
 
-        it('should exist as a plublic method on MEOCloud', function(done) {
+        it('should exist as a public method on MEOCloud', function(done) {
             expect(typeof meocloud.shareFolder).to.equal('function');
             done();
         });
@@ -261,7 +261,7 @@ describe('MEOCloud', function() {
             done();
         });
 
-        it('should exist as a plublic method on MEOCloud', function(done) {
+        it('should exist as a public method on MEOCloud', function(done) {
             expect(typeof meocloud.listSharedFolders).to.equal('function');
             done();
         });
@@ -298,7 +298,7 @@ describe('MEOCloud', function() {
             done();
         });
 
-        it('should exist as a plublic method on MEOCloud', function(done) {
+        it('should exist as a public method on MEOCloud', function(done) {
             expect(typeof meocloud.thumbnails).to.equal('function');
             done();
         });
@@ -327,7 +327,7 @@ describe('MEOCloud', function() {
             done();
         });
 
-        it('should exist as a plublic method on MEOCloud', function(done) {
+        it('should exist as a public method on MEOCloud', function(done) {
             expect(typeof meocloud.search).to.equal('function');
             done();
         });
@@ -368,7 +368,7 @@ describe('MEOCloud', function() {
             done();
         });
 
-        it('should exist as a plublic method on MEOCloud', function(done) {
+        it('should exist as a public method on MEOCloud', function(done) {
             expect(typeof meocloud.revisions).to.equal('function');
             done();
         });
@@ -403,7 +403,7 @@ describe('MEOCloud', function() {
             done();
         });
 
-        it('should exist as a plublic method on MEOCloud', function(done) {
+        it('should exist as a public method on MEOCloud', function(done) {
             expect(typeof meocloud.restore).to.equal('function');
             done();
         });
@@ -439,7 +439,7 @@ describe('MEOCloud', function() {
             done();
         });
 
-        it('should exist as a plublic method on MEOCloud', function(done) {
+        it('should exist as a public method on MEOCloud', function(done) {
             expect(typeof meocloud.media).to.equal('function');
             done();
         });
@@ -469,7 +469,54 @@ describe('MEOCloud', function() {
         });
     });
 
-    // TODO files test
+
+    describe('Files', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud({});
+            done();
+        });
+
+        it('should exist as a public method on MEOCloud', function(done) {
+            expect(typeof meocloud.files).to.equal('function');
+            done();
+        });
+
+        it('should make correct GET Files request', function(done) {
+            nock('https://api.meocloud.pt')
+            .get('/1/Files/meocloud/Photos/Brinquedos.jpg?rev=abcdefghij')
+            .reply(200, {});
+
+            meocloud.files('/Photos/Brinquedos.jpg', {
+                rev: 'abcdefghij'
+            }, function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('object');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+
+        it('should make correct POST Files request', function(done) {
+            nock('https://api.meocloud.pt')
+            .post('/1/Files/meocloud/Photos/Brinquedos.jpg', {
+                overwrite: 'true',
+                parent_rev: 'abcdefghij'
+            })
+            .reply(200, {});
+
+            meocloud.files('/Photos/Brinquedos.jpg', {
+                overwrite: true,
+                parent_rev: 'abcdefghij',
+                file_stream: {}
+            }, function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('object');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+    });
 
     describe('Delta', function() {
 
@@ -478,7 +525,7 @@ describe('MEOCloud', function() {
             done();
         });
 
-        it('should exist as a plublic method on MEOCloud', function(done) {
+        it('should exist as a public method on MEOCloud', function(done) {
             expect(typeof meocloud.delta).to.equal('function');
             done();
         });
@@ -513,7 +560,7 @@ describe('MEOCloud', function() {
             done();
         });
 
-        it('should exist as a plublic method on MEOCloud', function(done) {
+        it('should exist as a public method on MEOCloud', function(done) {
             expect(typeof meocloud.copy).to.equal('function');
             done();
         });
@@ -556,7 +603,7 @@ describe('MEOCloud', function() {
             done();
         });
 
-        it('should exist as a plublic method on MEOCloud', function(done) {
+        it('should exist as a public method on MEOCloud', function(done) {
             expect(typeof meocloud.copyRef).to.equal('function');
             done();
         });
@@ -587,7 +634,7 @@ describe('MEOCloud', function() {
             done();
         });
 
-        it('should exist as a plublic method on MEOCloud', function(done) {
+        it('should exist as a public method on MEOCloud', function(done) {
             expect(typeof meocloud.delete).to.equal('function');
             done();
         });
@@ -627,7 +674,7 @@ describe('MEOCloud', function() {
             done();
         });
 
-        it('should exist as a plublic method on MEOCloud', function(done) {
+        it('should exist as a public method on MEOCloud', function(done) {
             expect(typeof meocloud.move).to.equal('function');
             done();
         });
@@ -668,7 +715,7 @@ describe('MEOCloud', function() {
             done();
         });
 
-        it('should exist as a plublic method on MEOCloud', function(done) {
+        it('should exist as a public method on MEOCloud', function(done) {
             expect(typeof meocloud.createFolder).to.equal('function');
             done();
         });
@@ -708,7 +755,7 @@ describe('MEOCloud', function() {
             done();
         });
 
-        it('should exist as a plublic method on MEOCloud', function(done) {
+        it('should exist as a public method on MEOCloud', function(done) {
             expect(typeof meocloud.undeleteTree).to.equal('function');
             done();
         });
@@ -748,7 +795,7 @@ describe('MEOCloud', function() {
             done();
         });
 
-        it('should exist as a plublic method on MEOCloud', function(done) {
+        it('should exist as a public method on MEOCloud', function(done) {
             expect(typeof meocloud.accountInfo).to.equal('function');
             done();
         });
