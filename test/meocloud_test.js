@@ -31,8 +31,17 @@ describe('MEOCloud', function() {
         });
 
         it('should send OAuth params in request header', function(done) {
-            // TODO
-            done();
+            meocloud = new MEOCloud(config);
+            nock('https://api.meocloud.pt')
+            .matchHeader('Authorization', /oauth_token\=\"foobar\"/)
+            .get('/1/Metadata/' + config.root + '/test')
+            .reply(200, { is_dir: true, root: config.root });
+
+            meocloud.metadata('/test', null, function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('object');
+                done();
+            });
         });
 
     });
