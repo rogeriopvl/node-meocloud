@@ -9,10 +9,13 @@ var meocloud;
 
 // OAuth params
 var config = {
-    consumer_key: 'foo',
-    consumer_secret: 'bar',
-    token: 'foobar',
-    token_secret: 'xfoobar'
+    oauth: {
+        consumer_key: 'foo',
+        consumer_secret: 'bar',
+        token: 'foobar',
+        token_secret: 'xfoobar'
+    },
+    storage: 'sandbox'
 };
 
 describe('MEOCloud', function() {
@@ -34,7 +37,7 @@ describe('MEOCloud', function() {
     describe('Metadata', function() {
 
         beforeEach(function(done) {
-            meocloud = new MEOCloud({});
+            meocloud = new MEOCloud(config);
             done();
         });
 
@@ -86,7 +89,7 @@ describe('MEOCloud', function() {
     describe('MetadataShare', function() {
 
         beforeEach(function(done) {
-            meocloud = new MEOCloud({});
+            meocloud = new MEOCloud(config);
             done();
         });
 
@@ -140,7 +143,7 @@ describe('MEOCloud', function() {
     describe('ListLinks', function() {
 
         beforeEach(function(done) {
-            meocloud = new MEOCloud({});
+            meocloud = new MEOCloud(config);
             done();
         });
 
@@ -168,7 +171,7 @@ describe('MEOCloud', function() {
     describe('DeleteLink', function() {
 
         beforeEach(function(done) {
-            meocloud = new MEOCloud({});
+            meocloud = new MEOCloud(config);
             done();
         });
 
@@ -195,7 +198,7 @@ describe('MEOCloud', function() {
     describe('Shares', function() {
 
         beforeEach(function(done) {
-            meocloud = new MEOCloud({});
+            meocloud = new MEOCloud(config);
             done();
         });
 
@@ -228,7 +231,7 @@ describe('MEOCloud', function() {
     describe('ShareFolder', function() {
 
         beforeEach(function(done) {
-            meocloud = new MEOCloud({});
+            meocloud = new MEOCloud(config);
             done();
         });
 
@@ -257,7 +260,7 @@ describe('MEOCloud', function() {
     describe('ListSharedFolders', function() {
 
         beforeEach(function(done) {
-            meocloud = new MEOCloud({});
+            meocloud = new MEOCloud(config);
             done();
         });
 
@@ -294,7 +297,7 @@ describe('MEOCloud', function() {
     describe('Thumbnails', function() {
 
         beforeEach(function(done) {
-            meocloud = new MEOCloud({});
+            meocloud = new MEOCloud(config);
             done();
         });
 
@@ -323,7 +326,7 @@ describe('MEOCloud', function() {
     describe('Search', function() {
 
         beforeEach(function(done) {
-            meocloud = new MEOCloud({});
+            meocloud = new MEOCloud(config);
             done();
         });
 
@@ -364,7 +367,7 @@ describe('MEOCloud', function() {
     describe('Revisions', function() {
 
         beforeEach(function(done) {
-            meocloud = new MEOCloud({});
+            meocloud = new MEOCloud(config);
             done();
         });
 
@@ -399,7 +402,7 @@ describe('MEOCloud', function() {
     describe('Restore', function() {
 
         beforeEach(function(done) {
-            meocloud = new MEOCloud({});
+            meocloud = new MEOCloud(config);
             done();
         });
 
@@ -435,7 +438,7 @@ describe('MEOCloud', function() {
     describe('Media', function() {
 
         beforeEach(function(done) {
-            meocloud = new MEOCloud({});
+            meocloud = new MEOCloud(config);
             done();
         });
 
@@ -473,7 +476,7 @@ describe('MEOCloud', function() {
     describe('Files', function() {
 
         beforeEach(function(done) {
-            meocloud = new MEOCloud({});
+            meocloud = new MEOCloud(config);
             done();
         });
 
@@ -521,7 +524,7 @@ describe('MEOCloud', function() {
     describe('Delta', function() {
 
         beforeEach(function(done) {
-            meocloud = new MEOCloud({});
+            meocloud = new MEOCloud(config);
             done();
         });
 
@@ -556,7 +559,7 @@ describe('MEOCloud', function() {
     describe('Copy', function() {
 
         beforeEach(function(done) {
-            meocloud = new MEOCloud({});
+            meocloud = new MEOCloud(config);
             done();
         });
 
@@ -599,7 +602,7 @@ describe('MEOCloud', function() {
     describe('CopyRef', function() {
 
         beforeEach(function(done) {
-            meocloud = new MEOCloud({});
+            meocloud = new MEOCloud(config);
             done();
         });
 
@@ -630,7 +633,7 @@ describe('MEOCloud', function() {
     describe('Delete', function() {
 
         beforeEach(function(done) {
-            meocloud = new MEOCloud({});
+            meocloud = new MEOCloud(config);
             done();
         });
 
@@ -670,7 +673,7 @@ describe('MEOCloud', function() {
     describe('Move', function() {
 
         beforeEach(function(done) {
-            meocloud = new MEOCloud({});
+            meocloud = new MEOCloud(config);
             done();
         });
 
@@ -711,7 +714,7 @@ describe('MEOCloud', function() {
     describe('CreateFolder', function() {
 
         beforeEach(function(done) {
-            meocloud = new MEOCloud({});
+            meocloud = new MEOCloud(config);
             done();
         });
 
@@ -751,7 +754,7 @@ describe('MEOCloud', function() {
     describe('UndeleteTree', function() {
 
         beforeEach(function(done) {
-            meocloud = new MEOCloud({});
+            meocloud = new MEOCloud(config);
             done();
         });
 
@@ -791,7 +794,7 @@ describe('MEOCloud', function() {
     describe('AccountInfo', function() {
 
         beforeEach(function(done) {
-            meocloud = new MEOCloud({});
+            meocloud = new MEOCloud(config);
             done();
         });
 
