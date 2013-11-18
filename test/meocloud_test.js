@@ -307,7 +307,7 @@ describe('MEOCloud', function() {
         });
 
         it('should make correct thumbnails request', function(done) {
-            nock('https://api.meocloud.pt')
+            nock('https://content-api.meocloud.pt')
             .get('/1/Thumbnails/meocloud/test.jpg?size=m&format=png')
             .reply(200, {});
 
@@ -486,7 +486,7 @@ describe('MEOCloud', function() {
         });
 
         it('should make correct GET Files request', function(done) {
-            nock('https://api.meocloud.pt')
+            nock('https://content-api.meocloud.pt')
             .get('/1/Files/meocloud/Photos/Brinquedos.jpg?rev=abcdefghij')
             .reply(200, {});
 
@@ -501,7 +501,7 @@ describe('MEOCloud', function() {
         });
 
         it('should make correct POST Files request', function(done) {
-            nock('https://api.meocloud.pt')
+            nock('https://content-api.meocloud.pt')
             .post('/1/Files/meocloud/Photos/Brinquedos.jpg', {
                 overwrite: 'true',
                 parent_rev: 'abcdefghij'
