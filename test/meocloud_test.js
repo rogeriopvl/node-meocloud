@@ -18,6 +18,9 @@ var config = {
     storage: 'sandbox'
 };
 
+// disable all real http connections
+nock.disableNetConnect();
+
 describe('MEOCloud', function() {
 
     describe('OAuth', function() {
@@ -825,5 +828,38 @@ describe('MEOCloud', function() {
                 done();
             });
         });
+    });
+
+    describe('Protocol', function() {
+
+        it('should match https when no protocol choide is made', function(done) {
+            meocloud = new MEOCloud(config);
+
+            nock('https://api.meocloud.pt').get('/1/Metadata/meocloud/sslTest')
+            .reply(200, { is_dir: true, root: 'meocloud' });
+
+            meocloud.metadata('/sslTest', {}, function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('object');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+
+        it('should match http request when protocol choice is made', function(done) {
+            config.noSSL = true;
+            meocloud = new MEOCloud(config);
+
+            nock('http://api.meocloud.pt').get('/1/Metadata/meocloud/sslTest')
+            .reply(200, { is_dir: true, root: 'meocloud' });
+
+            meocloud.metadata('/sslTest', {}, function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('object');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+
     });
 });
