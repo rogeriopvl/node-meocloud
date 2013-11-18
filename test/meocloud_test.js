@@ -15,7 +15,7 @@ var config = {
         token: 'foobar',
         token_secret: 'xfoobar'
     },
-    storage: 'sandbox'
+    root: 'sandbox'
 };
 
 // disable all real http connections
@@ -50,8 +50,8 @@ describe('MEOCloud', function() {
         });
 
         it('should make correct metadata request without params', function(done) {
-            nock('https://api.meocloud.pt').get('/1/Metadata/meocloud/test')
-            .reply(200, { is_dir: true, root: 'meocloud' });
+            nock('https://api.meocloud.pt').get('/1/Metadata/' + config.root + '/test')
+            .reply(200, { is_dir: true, root: config.root });
 
             meocloud.metadata('/test', {}, function(err, data, status) {
                 expect(err).to.not.be.ok;
@@ -75,8 +75,8 @@ describe('MEOCloud', function() {
             var qs = querystring.stringify(query);
 
             nock('https://api.meocloud.pt')
-            .get('/1/Metadata/meocloud/test?' + qs)
-            .reply(200, { is_dir: true, root: 'meocloud' });
+            .get('/1/Metadata/' + config.root + '/test?' + qs)
+            .reply(200, { is_dir: true, root: config.root });
 
             meocloud.metadata('/test', query, function(err, data, status) {
                 expect(err).to.not.be.ok;
@@ -105,7 +105,7 @@ describe('MEOCloud', function() {
         it('should make correct metadataShare request without params', function(done) {
             nock('https://api.meocloud.pt')
             .get('/1/MetadataShare/bb26f0f6-d66f-46a7-8905-1fc125a293e7/test')
-            .reply(200, { is_dir: true, root: 'meocloud' });
+            .reply(200, { is_dir: true, root: config.root });
 
             meocloud.metadataShare(
                 'bb26f0f6-d66f-46a7-8905-1fc125a293e7',
@@ -125,7 +125,7 @@ describe('MEOCloud', function() {
         it('should make correct metadataShare request with params', function(done) {
             nock('https://api.meocloud.pt')
             .get('/1/MetadataShare/bb26f0f6-d66f-46a7-8905-1fc125a293e7/test?file_limit=1')
-            .reply(200, { is_dir: true, root: 'meocloud' });
+            .reply(200, { is_dir: true, root: config.root });
 
             meocloud.metadataShare(
                 'bb26f0f6-d66f-46a7-8905-1fc125a293e7',
@@ -185,10 +185,12 @@ describe('MEOCloud', function() {
 
         it('should make correct deleteLink request', function(done) {
             nock('https://api.meocloud.pt')
-            .post('/1/DeleteLink', { shareid: 'abcdefghijkl' })
+            .post('/1/DeleteLink', { shareid: 'abcdefghijkl', root: config.root })
             .reply(200, {});
 
-            meocloud.deleteLink('abcdefghijkl', function(err, data, status) {
+            meocloud.deleteLink(
+                { shareid: 'abcdefghijkl', root: config.root },
+                function(err, data, status) {
                 expect(err).to.not.be.ok;
                 expect(data).to.be.an('object');
                 expect(data).to.be.empty;
@@ -212,7 +214,7 @@ describe('MEOCloud', function() {
 
         it('should make correct shares request', function(done) {
             nock('https://api.meocloud.pt')
-            .post('/1/Shares/meocloud/test.txt')
+            .post('/1/Shares/' + config.root + '/test.txt')
             .reply(200, {
                 url: 'http://foobar',
                 expires: 'Tue, 01 Jan 2030 00:00:00 +0000',
@@ -245,7 +247,7 @@ describe('MEOCloud', function() {
 
         it('should make correct shareFolder request', function(done) {
             nock('https://api.meocloud.pt')
-            .post('/1/ShareFolder/meocloud/testFolder')
+            .post('/1/ShareFolder/' + config.root + '/testFolder')
             .reply(200, { req_id: '509fc400-2f65-11e2-9501-3c0754179fed' });
 
             meocloud.shareFolder('/testFolder', {
@@ -311,7 +313,7 @@ describe('MEOCloud', function() {
 
         it('should make correct thumbnails request', function(done) {
             nock('https://content-api.meocloud.pt')
-            .get('/1/Thumbnails/meocloud/test.jpg?size=m&format=png')
+            .get('/1/Thumbnails/' + config.root + '/test.jpg?size=m&format=png')
             .reply(200, {});
 
             meocloud.thumbnails('/test.jpg', {
@@ -341,7 +343,7 @@ describe('MEOCloud', function() {
         it('should make correct search request', function(done) {
             nock('https://api.meocloud.pt')
             .get([
-                '/1/Search/meocloud/Public',
+                '/1/Search/' + config.root + '/Public',
                 '?query=test&mime_type=image%2F*&file_limit=10&include_deleted=true'
             ].join(''))
             .reply(200, [{
@@ -381,7 +383,7 @@ describe('MEOCloud', function() {
 
         it('should make correct revisions request', function(done) {
             nock('https://api.meocloud.pt')
-            .get('/1/Revisions/meocloud/Public/test.js?rev_limit=4')
+            .get('/1/Revisions/' + config.root + '/Public/test.js?rev_limit=4')
             .reply(200, [{
                 mime_type: 'application/javascript',
                 rev: 'abcdefghijkl',
@@ -416,7 +418,7 @@ describe('MEOCloud', function() {
 
         it('should make correct restore request', function(done) {
             nock('https://api.meocloud.pt')
-            .post('/1/Restore/meocloud/Public/test.js', { rev: 'abcdefghijkl'})
+            .post('/1/Restore/' + config.root + '/Public/test.js', { rev: 'abcdefghijkl'})
             .reply(200, {
                 path: '/Public/test.js',
                 rev: 'abcdefghijkl',
@@ -452,7 +454,7 @@ describe('MEOCloud', function() {
 
         it('should make correct media request', function(done) {
             nock('https://api.meocloud.pt')
-            .post('/1/Media/meocloud/Movies/SAPO1.mp4', {
+            .post('/1/Media/' + config.root + '/Movies/SAPO1.mp4', {
                 download_fallback: 'true',
                 protocol: 'hls'
             })
@@ -490,7 +492,7 @@ describe('MEOCloud', function() {
 
         it('should make correct GET Files request', function(done) {
             nock('https://content-api.meocloud.pt')
-            .get('/1/Files/meocloud/Photos/Brinquedos.jpg?rev=abcdefghij')
+            .get('/1/Files/' + config.root + '/Photos/Brinquedos.jpg?rev=abcdefghij')
             .reply(200, {});
 
             meocloud.files('/Photos/Brinquedos.jpg', {
@@ -505,7 +507,7 @@ describe('MEOCloud', function() {
 
         it('should make correct POST Files request', function(done) {
             nock('https://content-api.meocloud.pt')
-            .post('/1/Files/meocloud/Photos/Brinquedos.jpg', {
+            .post('/1/Files/' + config.root + '/Photos/Brinquedos.jpg', {
                 overwrite: 'true',
                 parent_rev: 'abcdefghij'
             })
@@ -574,7 +576,7 @@ describe('MEOCloud', function() {
         it('should make correct copy request', function(done) {
             nock('https://api.meocloud.pt')
             .post('/1/Fileops/Copy', {
-                root: 'meocloud',
+                root: config.root,
                 from_path: '/Public/test.js',
                 to_path: '/Temp/test.js',
                 from_copy_ref: 'z1X6ATl6aWtzOGq0c3g5Ng'
@@ -586,7 +588,7 @@ describe('MEOCloud', function() {
             });
 
             meocloud.copy({
-                root: 'meocloud',
+                root: config.root,
                 from_path: '/Public/test.js',
                 to_path: '/Temp/test.js',
                 from_copy_ref: 'z1X6ATl6aWtzOGq0c3g5Ng'
@@ -616,7 +618,7 @@ describe('MEOCloud', function() {
 
         it('should make correct copyRef request', function(done) {
             nock('https://api.meocloud.pt')
-            .get('/1/CopyRef/meocloud/Photos/Brinquedos.mp4')
+            .get('/1/CopyRef/' + config.root + '/Photos/Brinquedos.mp4')
             .reply(200, {
                 copy_ref: 'z1X6ATl6aWtzOGq0c3g5Ng',
                 expires: 'Fri, 31 Jan 2042 21:01:05 +0000'
@@ -648,7 +650,7 @@ describe('MEOCloud', function() {
         it('should make correct delete request', function(done) {
             nock('https://api.meocloud.pt')
             .post('/1/Fileops/Delete', {
-                root: 'meocloud',
+                root: config.root,
                 path: '/Temp/test.js',
             })
             .reply(200, {
@@ -658,7 +660,7 @@ describe('MEOCloud', function() {
             });
 
             meocloud.delete({
-                root: 'meocloud',
+                root: config.root,
                 path: '/Temp/test.js'
             }, function(err, data, status) {
                 expect(err).to.not.be.ok;
@@ -688,7 +690,7 @@ describe('MEOCloud', function() {
         it('should make correct move request', function(done) {
             nock('https://api.meocloud.pt')
             .post('/1/Fileops/Move', {
-                root: 'meocloud',
+                root: config.root,
                 from_path: '/Temp/test.js',
                 to_path: '/Testes/test.js'
             })
@@ -699,7 +701,7 @@ describe('MEOCloud', function() {
             });
 
             meocloud.move({
-                root: 'meocloud',
+                root: config.root,
                 from_path: '/Temp/test.js',
                 to_path: '/Testes/test.js'
             }, function(err, data, status) {
@@ -729,7 +731,7 @@ describe('MEOCloud', function() {
         it('should make correct createFolder request', function(done) {
             nock('https://api.meocloud.pt')
             .post('/1/Fileops/CreateFolder', {
-                root: 'meocloud',
+                root: config.root,
                 path: '/NewStuff'
             })
             .reply(200, {
@@ -739,7 +741,7 @@ describe('MEOCloud', function() {
             });
 
             meocloud.createFolder({
-                root: 'meocloud',
+                root: config.root,
                 path: '/NewStuff',
             }, function(err, data, status) {
                 expect(err).to.not.be.ok;
@@ -769,7 +771,7 @@ describe('MEOCloud', function() {
         it('should make correct undeleteTree request', function(done) {
             nock('https://api.meocloud.pt')
             .post('/1/UndeleteTree', {
-                root: 'meocloud',
+                root: config.root,
                 path: '/NewStuff'
             })
             .reply(200, {
@@ -779,7 +781,7 @@ describe('MEOCloud', function() {
             });
 
             meocloud.undeleteTree({
-                root: 'meocloud',
+                root: config.root,
                 path: '/NewStuff',
             }, function(err, data, status) {
                 expect(err).to.not.be.ok;
@@ -835,8 +837,8 @@ describe('MEOCloud', function() {
         it('should match https when no protocol choide is made', function(done) {
             meocloud = new MEOCloud(config);
 
-            nock('https://api.meocloud.pt').get('/1/Metadata/meocloud/sslTest')
-            .reply(200, { is_dir: true, root: 'meocloud' });
+            nock('https://api.meocloud.pt').get('/1/Metadata/' + config.root + '/sslTest')
+            .reply(200, { is_dir: true, root: config.root });
 
             meocloud.metadata('/sslTest', {}, function(err, data, status) {
                 expect(err).to.not.be.ok;
@@ -850,8 +852,8 @@ describe('MEOCloud', function() {
             config.noSSL = true;
             meocloud = new MEOCloud(config);
 
-            nock('http://api.meocloud.pt').get('/1/Metadata/meocloud/sslTest')
-            .reply(200, { is_dir: true, root: 'meocloud' });
+            nock('http://api.meocloud.pt').get('/1/Metadata/' + config.root + '/sslTest')
+            .reply(200, { is_dir: true, root: config.root });
 
             meocloud.metadata('/sslTest', {}, function(err, data, status) {
                 expect(err).to.not.be.ok;
