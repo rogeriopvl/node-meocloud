@@ -194,11 +194,11 @@ describe('MEOCloud', function() {
 
         it('should make correct deleteLink request', function(done) {
             nock('https://api.meocloud.pt')
-            .post('/1/DeleteLink', { shareid: 'abcdefghijkl', root: config.root })
+            .post('/1/DeleteLink', { shareid: 'abcdefghijkl' })
             .reply(200, {});
 
             meocloud.deleteLink(
-                { shareid: 'abcdefghijkl', root: config.root },
+                { shareid: 'abcdefghijkl' },
                 function(err, data, status) {
                 expect(err).to.not.be.ok;
                 expect(data).to.be.an('object');
