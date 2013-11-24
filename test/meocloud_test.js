@@ -504,7 +504,7 @@ describe('MEOCloud', function() {
             .get('/1/Files/' + config.root + '/Photos/Brinquedos.jpg?rev=abcdefghij')
             .reply(200, {});
 
-            meocloud.files('/Photos/Brinquedos.jpg', {
+            meocloud.files('/Photos/Brinquedos.jpg', null, {
                 rev: 'abcdefghij'
             }, function(err, data, status) {
                 expect(err).to.not.be.ok;
@@ -514,18 +514,18 @@ describe('MEOCloud', function() {
             });
         });
 
-        it('should make correct POST Files request', function(done) {
+        it('should make correct PUT Files request', function(done) {
             nock('https://api-content.meocloud.pt')
-            .post('/1/Files/' + config.root + '/Photos/Brinquedos.jpg', {
+            .put('/1/Files/' + config.root + '/Photos/Brinquedos.jpg?overwrite=true&parent_rev=abcdefghij', {
                 overwrite: 'true',
                 parent_rev: 'abcdefghij'
             })
-            .reply(200, {});
+            .reply(200, {}).log(console.log);
 
-            meocloud.files('/Photos/Brinquedos.jpg', {
-                overwrite: true,
+            meocloud.files('/Photos/Brinquedos.jpg', 1000, {
+                overwrite: 'true',
                 parent_rev: 'abcdefghij',
-                file_stream: {}
+                fileStream: { pipe: function(foo) { return foo; } }
             }, function(err, data, status) {
                 expect(err).to.not.be.ok;
                 expect(data).to.be.an('object');
