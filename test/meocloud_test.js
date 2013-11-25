@@ -514,13 +514,9 @@ describe('MEOCloud', function() {
             });
         });
 
-        it('should make correct PUT Files request', function(done) {
+        xit('should make correct PUT Files request', function(done) {
             nock('https://api-content.meocloud.pt')
-            .put('/1/Files/' + config.root + '/Photos/Brinquedos.jpg?overwrite=true&parent_rev=abcdefghij', {
-                overwrite: 'true',
-                parent_rev: 'abcdefghij'
-            })
-            .reply(200, {}).log(console.log);
+            .put('/1/Files/' + config.root + '/Photos/Brinquedos.jpg?overwrite=true&parent_rev=abcdefghij', 'overwrite=true&parent_rev=abcdefghij').reply(200, {}).log(console.log);
 
             meocloud.files('/Photos/Brinquedos.jpg', 1000, {
                 overwrite: 'true',
