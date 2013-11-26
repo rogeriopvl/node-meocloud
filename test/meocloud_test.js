@@ -776,20 +776,14 @@ describe('MEOCloud', function() {
 
         it('should make correct undeleteTree request', function(done) {
             nock('https://api.meocloud.pt')
-            .post('/1/UndeleteTree', {
-                root: config.root,
-                path: '/NewStuff'
-            })
+            .post('/1/UndeleteTree/' + config.root + '/NewStuff')
             .reply(200, {
                 is_dir: true,
                 size: '0 bytes',
                 path: '/NewStuff'
             });
 
-            meocloud.undeleteTree({
-                root: config.root,
-                path: '/NewStuff',
-            }, function(err, data, status) {
+            meocloud.undeleteTree('/NewStuff', function(err, data, status) {
                 expect(err).to.not.be.ok;
                 expect(data).to.be.an('object');
                 expect(data).to.have.ownProperty('is_dir');
