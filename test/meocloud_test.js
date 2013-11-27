@@ -504,7 +504,7 @@ describe('MEOCloud', function() {
             .get('/1/Files/' + config.root + '/Photos/Brinquedos.jpg?rev=abcdefghij')
             .reply(200, {});
 
-            meocloud.files('/Photos/Brinquedos.jpg', null, {
+            meocloud.files('/Photos/Brinquedos.jpg', {
                 rev: 'abcdefghij'
             }, function(err, data, status) {
                 expect(err).to.not.be.ok;
@@ -519,10 +519,11 @@ describe('MEOCloud', function() {
             .put('/1/Files/' + config.root + '/Photos/Brinquedos.jpg?overwrite=true&parent_rev=abcdefghij')
             .reply(200, {});
 
-            meocloud.files('/Photos/Brinquedos.jpg', 1000, {
+            meocloud.files('/Photos/Brinquedos.jpg', {
                 overwrite: 'true',
                 parent_rev: 'abcdefghij',
-                fileStream: { pipe: function(foo) { return foo; } }
+                fileStream: { pipe: function(foo) { return foo; } },
+                fileSize: 1000
             }, function(err, data, status) {
                 expect(err).to.not.be.ok;
                 expect(data).to.be.an('object');
