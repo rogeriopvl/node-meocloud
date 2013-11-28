@@ -49,9 +49,7 @@ The first one, gives you enough flexibility to adapt to your project, but requir
 
        var fstream = fs.createReadStream('/file/to/upload.txt');
 
-       var params = { fileStream: fstream, fileSize: stat.size };
-
-        meocloud.files('/new/file/path.txt', params, function(err, data, status) {
+        meocloud.putFile('/new/file/path.txt', fstream, stat.size, params, function(err, data, status) {
             console.log(err, data, status);
         });
 
