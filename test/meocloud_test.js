@@ -533,6 +533,41 @@ describe('MEOCloud', function() {
         });
     });
 
+    describe('Upload', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud(config);
+            done();
+        });
+
+        it('should exist as a public method on MEOCloud', function(done) {
+            expect(typeof meocloud.upload).to.equal('function');
+            done();
+        });
+
+        if('should mimic correct PUT Files request', function(done) {
+            nock('https://api-content.meocloud.pt')
+            .matchHeader('Content-Length', /^[1-9][0-9]*$/) // any number > 0
+            .put('/1/Files/' + config.root + '/Photos/Brinquedos.jpg?overwrite=true&parent_rev=abcdefghij')
+            .reply(200, {});
+
+            meocloud.upload(
+                'package.json',
+                '/Photos/Brinquedos.jpg',
+                {
+                    overwrite: true,
+                    parent_rev: 'abcdefghij'
+                },
+                function(err, data, status) {
+                    expect(err).to.not.be.ok;
+                    expect(data).to.be.an('object');
+                    expect(status).to.equal(200);
+                    done();
+                }
+            );
+        });
+    });
+
     describe('Delta', function() {
 
         beforeEach(function(done) {
