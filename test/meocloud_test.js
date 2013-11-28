@@ -499,6 +499,21 @@ describe('MEOCloud', function() {
             done();
         });
 
+        it('should have getFile exist as a public method on MEOCloud', function(done) {
+            expect(typeof meocloud.getFile).to.equal('function');
+            done();
+        });
+
+        it('should have putFile exist as a public method on MEOCloud', function(done) {
+            expect(typeof meocloud.putFile).to.equal('function');
+            done();
+        });
+
+        it('should have upload exist as a public method on MEOCloud', function(done) {
+            expect(typeof meocloud.upload).to.equal('function');
+            done();
+        });
+
         it('should make correct GET Files request', function(done) {
             nock('https://api-content.meocloud.pt')
             .get('/1/Files/' + config.root + '/Photos/Brinquedos.jpg?rev=abcdefghij')
@@ -531,21 +546,8 @@ describe('MEOCloud', function() {
                 done();
             });
         });
-    });
 
-    describe('getFile', function() {
-
-        beforeEach(function(done) {
-            meocloud = new MEOCloud(config);
-            done();
-        });
-
-        it('should exist as a public method on MEOCloud', function(done) {
-            expect(typeof meocloud.getFile).to.equal('function');
-            done();
-        });
-
-        it('should mimic correct GET Files request', function(done) {
+        it('should have getFile mimic correct GET Files request', function(done) {
             nock('https://api-content.meocloud.pt')
             .get('/1/Files/' + config.root + '/Photos/Brinquedos.jpg?rev=abcdefghij')
             .reply(200, {});
@@ -559,27 +561,13 @@ describe('MEOCloud', function() {
                 done();
             });
         });
-    });
 
-    describe('putFile', function() {
-
-        beforeEach(function(done) {
-            meocloud = new MEOCloud(config);
-            done();
-        });
-
-        it('should exist as a public method on MEOCloud', function(done) {
-            expect(typeof meocloud.putFile).to.equal('function');
-            done();
-        });
-
-        if('should mimic correct PUT Files request', function(done) {
+        it('should have putFile mimic correct PUT Files request', function(done) {
             nock('https://api-content.meocloud.pt')
-            .matchHeader('Content-Length', /^[1-9][0-9]*$/) // any number > 0
             .put('/1/Files/' + config.root + '/Photos/Brinquedos.jpg?overwrite=true&parent_rev=abcdefghij')
             .reply(200, {});
 
-            meocloud.putFile(
+            var ret = meocloud.putFile(
                 '/Photos/Brinquedos.jpg',
                 { pipe: function(foo) { return foo; } },
                 1000,
@@ -594,22 +582,10 @@ describe('MEOCloud', function() {
                     done();
                 }
             );
-        });
-    });
-
-    describe('Upload', function() {
-
-        beforeEach(function(done) {
-            meocloud = new MEOCloud(config);
-            done();
+            expect(ret).to.be.an('object');
         });
 
-        it('should exist as a public method on MEOCloud', function(done) {
-            expect(typeof meocloud.upload).to.equal('function');
-            done();
-        });
-
-        if('should mimic correct PUT Files request', function(done) {
+        it('should have upload mimic correct PUT Files request', function(done) {
             nock('https://api-content.meocloud.pt')
             .matchHeader('Content-Length', /^[1-9][0-9]*$/) // any number > 0
             .put('/1/Files/' + config.root + '/Photos/Brinquedos.jpg?overwrite=true&parent_rev=abcdefghij')
