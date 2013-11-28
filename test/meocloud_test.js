@@ -533,6 +533,70 @@ describe('MEOCloud', function() {
         });
     });
 
+    describe('getFile', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud(config);
+            done();
+        });
+
+        it('should exist as a public method on MEOCloud', function(done) {
+            expect(typeof meocloud.getFile).to.equal('function');
+            done();
+        });
+
+        it('should mimic correct GET Files request', function(done) {
+            nock('https://api-content.meocloud.pt')
+            .get('/1/Files/' + config.root + '/Photos/Brinquedos.jpg?rev=abcdefghij')
+            .reply(200, {});
+
+            meocloud.getFile('/Photos/Brinquedos.jpg', {
+                rev: 'abcdefghij'
+            }, function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('object');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+    });
+
+    describe('putFile', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud(config);
+            done();
+        });
+
+        it('should exist as a public method on MEOCloud', function(done) {
+            expect(typeof meocloud.putFile).to.equal('function');
+            done();
+        });
+
+        if('should mimic correct PUT Files request', function(done) {
+            nock('https://api-content.meocloud.pt')
+            .matchHeader('Content-Length', /^[1-9][0-9]*$/) // any number > 0
+            .put('/1/Files/' + config.root + '/Photos/Brinquedos.jpg?overwrite=true&parent_rev=abcdefghij')
+            .reply(200, {});
+
+            meocloud.putFile(
+                '/Photos/Brinquedos.jpg',
+                { pipe: function(foo) { return foo; } },
+                1000,
+                {
+                    overwrite: 'true',
+                    parent_rev: 'abcdefghij',
+                },
+                function(err, data, status) {
+                    expect(err).to.not.be.ok;
+                    expect(data).to.be.an('object');
+                    expect(status).to.equal(200);
+                    done();
+                }
+            );
+        });
+    });
+
     describe('Upload', function() {
 
         beforeEach(function(done) {
