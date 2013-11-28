@@ -1,6 +1,6 @@
 # meocloud [![Build Status](https://secure.travis-ci.org/rogeriopvl/node-meocloud.png?branch=master)](http://travis-ci.org/rogeriopvl/node-meocloud)
 
-[MeoCloud](http://www.meocloud.pt) api wrapper.
+[MEOCloud](http://www.meocloud.pt) api wrapper.
 
 ## Getting Started
 
