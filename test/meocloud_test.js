@@ -706,7 +706,7 @@ describe('MEOCloud', function() {
                 expires: 'Fri, 31 Jan 2042 21:01:05 +0000'
             });
 
-            meocloud.copyRef('/Photos/Brinquedos.mp4', null, function(err, data, status) {
+            meocloud.copyRef('/Photos/Brinquedos.mp4', function(err, data, status) {
                 expect(err).to.not.be.ok;
                 expect(data).to.be.an('object');
                 expect(data).to.have.ownProperty('copy_ref');
