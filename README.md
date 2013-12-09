@@ -43,7 +43,7 @@ The first way, uses a helper method that takes care of all the details for you. 
 
     var meocloud = require(meocloud)(config);
 
-    var params = { overwrite: true }; // add here only the MEOCloud API params
+    var params = {}; // add here only the MEOCloud API params
 
     meocloud.upload('/file/to/upload.txt', '/new/file/path.txt', params, function(err, data, status) {
         console.log(err, data, status);
