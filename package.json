@@ -1,6 +1,6 @@
 {
   "name": "meocloud",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "lib/meocloud.js",
   "description": "MEOCloud api wrapper (http://meocloud.pt)",
   "keywords": ["cloudpt", "meocloud", "cloud", "sapo"],
