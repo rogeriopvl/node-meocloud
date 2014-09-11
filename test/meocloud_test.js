@@ -250,7 +250,7 @@ describe('MEOCloud', function() {
         });
 
         it('should exist as a public method on MEOCloud', function(done) {
-            expect(typeof meocloud.shares).to.equal('function');
+            expect(typeof meocloud.uploadLink).to.equal('function');
             done();
         });
 
@@ -265,6 +265,37 @@ describe('MEOCloud', function() {
                 expect(err).to.not.be.ok;
                 expect(data).to.be.an('object');
                 expect(data).to.have.ownProperty('shareid');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+    });
+
+    describe('SetLinkTTL', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud(config);
+            done();
+        });
+
+        it('should exist as a public method on MEOCloud', function(done) {
+            expect(typeof meocloud.setLinkTTL).to.equal('function');
+            done();
+        });
+
+        it('should make correct setLinkTTL request', function(done) {
+            nock('https://api.meocloud.pt')
+            .post('/1/SetLinkTTL', {
+                ttl: '84600',
+                shareid: '509fc400-2f65-11e2-9501-3c0754179fed'
+            }).reply(200, {});
+
+            meocloud.setLinkTTL({
+                ttl: '84600',
+                shareid: '509fc400-2f65-11e2-9501-3c0754179fed'
+            }, function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('object');
                 expect(status).to.equal(200);
                 done();
             });
