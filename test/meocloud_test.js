@@ -332,6 +332,33 @@ describe('MEOCloud', function() {
         });
     });
 
+    describe('DestroyShortURL', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud(config);
+            done();
+        });
+
+        it('should exist as a public method on MEOCloud', function(done) {
+            expect(typeof meocloud.destroyShortURL).to.equal('function');
+            done();
+        });
+
+        it('should make correct destroyShortURL request', function(done) {
+            nock('https://api.meocloud.pt')
+            .post('/1/DestroyShortURL/ga95k7')
+            .reply(200, { share_uuid: '9a3c9576-37a9-40fd-8f7b-181f4da2f124' });
+
+            meocloud.destroyShortURL('ga95k7', function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('object');
+                expect(data).to.have.ownProperty('share_uuid');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+    });
+
     describe('ShareFolder', function() {
 
         beforeEach(function(done) {
