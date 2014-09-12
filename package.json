@@ -1,6 +1,6 @@
 {
   "name": "meocloud",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "main": "lib/meocloud.js",
   "description": "MEOCloud api wrapper (http://meocloud.pt)",
   "keywords": ["cloudpt", "meocloud", "cloud", "sapo"],
@@ -32,6 +32,6 @@
     "test": "mocha"
   },
   "dependencies": {
-    "request": "~2.27.0"
+    "request": "~2.42.0"
   }
 }
