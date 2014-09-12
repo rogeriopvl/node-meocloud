@@ -391,6 +391,39 @@ describe('MEOCloud', function() {
         });
     });
 
+    describe('ChangeShareOwner', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud(config);
+            done();
+        });
+
+        it('should exist as a public method on MEOCloud', function(done) {
+            expect(typeof meocloud.changeShareOwner).to.equal('function');
+            done();
+        });
+
+        it('should make correct changeShareOwner request', function(done) {
+            nock('https://api.meocloud.pt')
+            .post('/1/ChangeShareOwner', {
+                shareid: '9a3c9576-37a9-40fd-8f7b-181f4da2f124',
+                to_userid: 'foobar'
+            })
+            .reply(200, { req_id: '509fc400-2f65-11e2-9501-3c0754179fed' });
+
+            meocloud.changeShareOwner({
+                shareid: '9a3c9576-37a9-40fd-8f7b-181f4da2f124',
+                to_userid: 'foobar'
+            }, function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('object');
+                expect(data).to.have.ownProperty('req_id');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+    });
+
     describe('ShareFolder', function() {
 
         beforeEach(function(done) {
