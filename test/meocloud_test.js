@@ -359,6 +359,38 @@ describe('MEOCloud', function() {
         });
     });
 
+    describe('LinkDomain', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud(config);
+            done();
+        });
+
+        it('should exist as a public method on MEOCloud', function(done) {
+            expect(typeof meocloud.linkDomain).to.equal('function');
+            done();
+        });
+
+        it('should make correct linkDomain request', function(done) {
+            nock('https://api.meocloud.pt')
+            .post('/1/LinkDomain', {
+                shareid: '9a3c9576-37a9-40fd-8f7b-181f4da2f124',
+                domain: 'example.com'
+            })
+            .reply(200, {});
+
+            meocloud.linkDomain({
+                shareid: '9a3c9576-37a9-40fd-8f7b-181f4da2f124',
+                domain: 'example.com'
+            }, function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('object');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+    });
+
     describe('ShareFolder', function() {
 
         beforeEach(function(done) {
