@@ -1358,6 +1358,32 @@ describe('MEOCloud', function() {
         });
     });
 
+    describe('ChangeUserLanguage', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud(config);
+            done();
+        });
+
+        it('should exist as a public method on MEOCloud', function(done) {
+            expect(typeof meocloud.changeUserLanguage).to.equal('function');
+            done();
+        });
+
+        it('should make correct changeUserLanguage request', function(done) {
+            nock('https://api.meocloud.pt')
+            .post('/1/ChangeUserLanguage')
+            .reply(200, {});
+
+            meocloud.changeUserLanguage({ lang_code: 'end' }, function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('object');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+    });
+
     describe('Protocol', function() {
 
         it('should match https when no protocol choide is made', function(done) {
