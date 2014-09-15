@@ -483,6 +483,34 @@ describe('MEOCloud', function() {
         });
     });
 
+    describe('OwnerUnsharesFolder', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud(config);
+            done();
+        });
+
+        it('should exist as a public method on MEOCloud', function(done) {
+            expect(typeof meocloud.ownerUnsharesFolder).to.equal('function');
+            done();
+        });
+
+        it('should make correct ownerUnsharesFolder request', function(done) {
+            nock('https://api.meocloud.pt')
+            .post('/1/OwnerUnsharesFolder/' + config.root + '/testFolder')
+            .reply(200, {});
+
+            meocloud.ownerUnsharesFolder(
+                '/testFolder',
+                function(err, data, status) {
+                    expect(err).to.not.be.ok;
+                    expect(data).to.be.an('object');
+                    expect(status).to.equal(200);
+                    done();
+            });
+        });
+    });
+
     describe('ShareFolder', function() {
 
         beforeEach(function(done) {
