@@ -1299,6 +1299,39 @@ describe('MEOCloud', function() {
         });
     });
 
+    describe('ListEvents', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud(config);
+            done();
+        });
+
+        it('should exist as a public method on MEOCloud', function(done) {
+            expect(typeof meocloud.listEvents).to.equal('function');
+            done();
+        });
+
+        it('should make correct listEvents request', function(done) {
+            nock('https://api.meocloud.pt')
+            .get('/1/ListEvents')
+            .reply(200, [
+                {
+                    event_id: 'abcdefg123',
+                    count: 1,
+                }
+            ]);
+
+            meocloud.listEvents(function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('array');
+                expect(data[0]).to.have.ownProperty('event_id');
+                expect(data[0]).to.have.ownProperty('count');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+    });
+
     describe('Protocol', function() {
 
         it('should match https when no protocol choide is made', function(done) {
