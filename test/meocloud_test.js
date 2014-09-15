@@ -924,7 +924,7 @@ describe('MEOCloud', function() {
             done();
         });
 
-        it('should make correct delta request', function(done) {
+        it('should make correct longpollDelta request', function(done) {
             nock('https://notifications.meocloud.pt')
             .get('/notifications/longpoll_delta?cursor=1353289183.061f533&timeout=60')
             .reply(200, {
@@ -940,6 +940,36 @@ describe('MEOCloud', function() {
                 expect(data).to.be.an('object');
                 expect(data).to.have.ownProperty('changes');
                 expect(data).to.have.ownProperty('backoff');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+    });
+
+    describe('LatestCursor', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud(config);
+            done();
+        });
+
+        it('should exist as a public method on MEOCloud', function(done) {
+            expect(typeof meocloud.latestCursor).to.equal('function');
+            done();
+        });
+
+        it('should make correct latestCursor request', function(done) {
+            nock('https://api.meocloud.pt')
+            .get('/1/LatestCursor')
+            .reply(200, {
+                cursor: 'foobar123456778-1234456-1234456'
+            });
+
+            meocloud.latestCursor(function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('object');
+                expect(data).to.have.ownProperty('cursor');
+                expect(data.cursor).to.equal('foobar123456778-1234456-1234456');
                 expect(status).to.equal(200);
                 done();
             });
