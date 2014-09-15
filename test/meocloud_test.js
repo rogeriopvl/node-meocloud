@@ -976,6 +976,31 @@ describe('MEOCloud', function() {
         });
     });
 
+    describe('Zipdir', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud(config);
+            done();
+        });
+
+        it('should exist as a public method on MEOCloud', function(done) {
+            expect(typeof meocloud.zipdir).to.equal('function');
+            done();
+        });
+
+        it('should make correct zipdir request', function(done) {
+            nock('https://api.meocloud.pt')
+            .get('/1/Zipdir/' + config.root + '/helio')
+            .reply(200);
+
+            meocloud.zipdir('/helio', function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+    });
+
     describe('Copy', function() {
 
         beforeEach(function(done) {
