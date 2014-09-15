@@ -452,6 +452,37 @@ describe('MEOCloud', function() {
         });
     });
 
+    describe('RemoveParticipantFromSharedFolder', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud(config);
+            done();
+        });
+
+        it('should exist as a public method on MEOCloud', function(done) {
+            expect(typeof meocloud.removeParticipantFromSharedFolder).to.equal('function');
+            done();
+        });
+
+        it('should make correct removeParticipantFromSharedFolder request', function(done) {
+            nock('https://api.meocloud.pt')
+            .post(
+                '/1/RemoveParticipantFromSharedFolder/' + config.root + '/testFolder',
+                { participantid: 'foobar' }
+            ).reply(200, {});
+
+            meocloud.removeParticipantFromSharedFolder('/testFolder',{
+                participantid: 'foobar'
+            },
+            function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('object');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+    });
+
     describe('ShareFolder', function() {
 
         beforeEach(function(done) {
