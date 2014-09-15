@@ -1230,6 +1230,39 @@ describe('MEOCloud', function() {
         });
     });
 
+    describe('ForgetFile', function() {
+
+        beforeEach(function(done) {
+            meocloud = new MEOCloud(config);
+            done();
+        });
+
+        it('should exist as a public method on MEOCloud', function(done) {
+            expect(typeof meocloud.forgetFile).to.equal('function');
+            done();
+        });
+
+        it('should make correct forgetFile request', function(done) {
+            nock('https://api.meocloud.pt')
+            .post('/1/Fileops/ForgetFile', {
+                root: config.root,
+                path: '/meocloud_TEST.md'
+            })
+            .reply(200, { res: 'ok' });
+
+            meocloud.forgetFile({
+                root: config.root,
+                path: '/meocloud_TEST.md'
+            }, function(err, data, status) {
+                expect(err).to.not.be.ok;
+                expect(data).to.be.an('object');
+                expect(data).to.have.ownProperty('res');
+                expect(status).to.equal(200);
+                done();
+            });
+        });
+    });
+
     describe('AccountInfo', function() {
 
         beforeEach(function(done) {
