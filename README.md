@@ -1,5 +1,7 @@
 # meocloud [![Build Status](https://secure.travis-ci.org/rogeriopvl/node-meocloud.png?branch=master)](http://travis-ci.org/rogeriopvl/node-meocloud)
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/rogeriopvl/node-meocloud.svg)](https://greenkeeper.io/)
+
 [MEOCloud](http://www.meocloud.pt) api wrapper.
 
 ## Getting Started
