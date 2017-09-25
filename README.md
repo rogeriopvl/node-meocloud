@@ -12,30 +12,34 @@
 
 ### Config
 
-    var config = {
-        auth: {
-            consumer_key: 'xxxxxxxxxxxxxx',
-            consumer_secret: 'xxxxxxxxxxxx',
-            token: 'xxxxxxxxxxxxxx',
-            token_secret: 'xxxxxxxxxxxxxx';
-        },
-        root: 'meocloud', // or sandbox
-        noSSL: true // default: false
-    }
+```js
+var config = {
+    auth: {
+        consumer_key: 'xxxxxxxxxxxxxx',
+        consumer_secret: 'xxxxxxxxxxxx',
+        token: 'xxxxxxxxxxxxxx',
+        token_secret: 'xxxxxxxxxxxxxx';
+    },
+    root: 'meocloud', // or sandbox
+    noSSL: true // default: false
+}
 
-    var meocloud = require('meocloud')(config);
+var meocloud = require('meocloud')(config);
+```
 
 ### Search for file
 
-    var meocloud = require('meocloud')(config);
+```js
+var meocloud = require('meocloud')(config);
 
-    var params = {
-        query: 'my_search_term'
-    };
+var params = {
+    query: 'my_search_term'
+};
 
-    meocloud.search('/', params, function(err, data, status) {
-        console.log(err, data, status);
-    });
+meocloud.search('/', params, function(err, data, status) {
+    console.log(err, data, status);
+});
+```
 
 ### File Upload
 
@@ -43,30 +47,34 @@ There's two ways to make file uploads.
 
 The first way, uses a helper method that takes care of all the details for you. If you don't need much flexibility, just use this:
 
-    var meocloud = require(meocloud)(config);
+```js
+var meocloud = require(meocloud)(config);
 
-    var params = {}; // add here only the MEOCloud API params
+var params = {}; // add here only the MEOCloud API params
 
-    meocloud.upload('/file/to/upload.txt', '/new/file/path.txt', params, function(err, data, status) {
-        console.log(err, data, status);
-    });
+meocloud.upload('/file/to/upload.txt', '/new/file/path.txt', params, function(err, data, status) {
+    console.log(err, data, status);
+});
+```
 
 The second one, gives you enough flexibility to adapt to your project, but requires you to provide all the code to deal with files, and returns the request object so you can add event listeners to control the progress or whatever. Here's an example:
 
-    var meocloud = require('meocloud')(config);
-    var fs = require('fs');
+```js
+var meocloud = require('meocloud')(config);
+var fs = require('fs');
 
-    fs.stat('/file/to/upload.txt', console.log(err, stat) {
-       if (err) { throw err; }
+fs.stat('/file/to/upload.txt', console.log(err, stat) {
+    if (err) { throw err; }
 
-       var fstream = fs.createReadStream('/file/to/upload.txt');
-       var params = { overwrite: true };
+    var fstream = fs.createReadStream('/file/to/upload.txt');
+    var params = { overwrite: true };
 
-        meocloud.putFile('/new/file/path.txt', fstream, stat.size, params, function(err, data, status) {
-            console.log(err, data, status);
-        });
-
+    meocloud.putFile('/new/file/path.txt', fstream, stat.size, params, function(err, data, status) {
+        console.log(err, data, status);
     });
+
+});
+```
 
 
 ##### More samples coming soon ...
