@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "main": "lib/meocloud.js",
   "description": "MEOCloud api wrapper (http://meocloud.pt)",
-  "keywords": ["cloudpt", "meocloud", "cloud", "sapo"],
+  "keywords": [
+    "cloudpt",
+    "meocloud",
+    "cloud",
+    "sapo"
+  ],
   "homepage": "http://github.com/rogeriopvl/node-meocloud",
   "bugs": "https://github.com/rogeriopvl/meocloud/issues",
   "author": {
