@@ -14,7 +14,7 @@
 
 ```js
 var config = {
-    auth: {
+    oauth: {
         consumer_key: 'xxxxxxxxxxxxxx',
         consumer_secret: 'xxxxxxxxxxxx',
         token: 'xxxxxxxxxxxxxx',
