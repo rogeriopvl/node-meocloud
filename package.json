@@ -37,6 +37,6 @@
     "test": "mocha"
   },
   "dependencies": {
-    "request": "^2.53.0"
+    "request": "^2.87.0"
   }
 }
